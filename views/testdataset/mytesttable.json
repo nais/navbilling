@@ -1,9 +1,0 @@
-{
-  "schema": [
-    {
-      "name": "ID",
-      "type": "INTEGER",
-      "mode": "REQUIRED"
-    }
-  ]
-}
