@@ -15,7 +15,7 @@ resource "google_bigquery_table" "test_view" {
   }
 }
 
-resource "google_bigquery_dataset" "test_terraform" {
+data "google_bigquery_dataset" "test_terraform" {
   dataset_id    = "test_terraform"
   friendly_name = "test_terraform"
   description   = "Testing terraform"
@@ -23,7 +23,7 @@ resource "google_bigquery_dataset" "test_terraform" {
 }
 
 resource "google_bigquery_table" "test_view1" {
-  dataset_id = google_bigquery_dataset.test_terraform.dataset_id
+  dataset_id = data.google_bigquery_dataset.test_terraform.dataset_id
   table_id   = "test_view1"
 
   view {
