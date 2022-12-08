@@ -60,13 +60,15 @@
                   , DATE(usage_start_time, 'US/Pacific') AS dato
                   , (SUM(CAST(cost * 1000000 AS int64)) + SUM(IFNULL((
                                                                          SELECT
-                                                                             SUM(CAST(c.amount * 1000000 AS int64))
+                                                                             SUM(IF(c.type != 'COMMITTED_USAGE_DISCOUNT_DOLLAR_BASE', CAST(c.amount * 1000000 AS int64), 0))
                                                                          FROM
                                                                              UNNEST(credits) c),
                                                                      0))) / 1000000 AS total
              FROM `nais-analyse-prod-2dcc.navbilling.gcp_billing_export`
                   -- kostnader for disse tre prosjektene skal særbehandles
              WHERE project_id IN ('nais-dev-2e7b', 'nais-labs-ebde', 'nais-prod-020f')
+                  -- CUD som ikke fordeles på team. Inkluderes ved å ikke trekke fra CUD-credits i stedet
+               AND sku_id NOT IN ('08CF-4B12-9DDF', 'F61D-4D51-AAFC')
              GROUP BY 1,2,3,4,5,6
          )
 

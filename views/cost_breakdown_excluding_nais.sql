@@ -17,7 +17,7 @@
          , b.sku_description
          , (SUM(CAST(b.cost * 1000000 AS int64)) + SUM(IFNULL((
                                                                   SELECT
-                                                                      SUM(CAST(c.amount * 1000000 AS int64))
+                                                                      SUM(IF(c.type != 'COMMITTED_USAGE_DISCOUNT_DOLLAR_BASE', CAST(c.amount * 1000000 AS int64), 0))
                                                                   FROM
                                                                       UNNEST(credits) c),
                                                               0))) / 1000000
@@ -29,7 +29,10 @@
                        ON b.project_id = p.project_id
 
     WHERE b.project_id NOT IN ('nais-dev-2e7b', 'nais-labs-ebde', 'nais-prod-020f')
-       OR b.project_name IS NULL
+        OR b.project_name IS NULL
+        -- CUD som ikke fordeles på team. Inkluderes ved å ikke trekke fra CUD-credits i stedet
+        AND b.sku_id NOT IN ('08CF-4B12-9DDF', 'F61D-4D51-AAFC')
+
 
     GROUP BY project_name, env, team, cost_category, dato, service_description, sku_id, sku_description, app, tenant
 )
