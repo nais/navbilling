@@ -28,8 +28,8 @@
              LEFT JOIN `nais-analyse-prod-2dcc.navbilling.gcp_projects_derived` p
                        ON b.project_id = p.project_id
 
-    WHERE b.project_id NOT IN ('nais-dev-2e7b', 'nais-labs-ebde', 'nais-prod-020f')
-        OR b.project_name IS NULL
+    WHERE (b.project_id NOT IN ('nais-dev-2e7b', 'nais-labs-ebde', 'nais-prod-020f')
+        OR b.project_name IS NULL)
         -- CUD som ikke fordeles på team. Inkluderes ved å ikke trekke fra CUD-credits i stedet
         AND b.sku_id NOT IN ('08CF-4B12-9DDF', 'F61D-4D51-AAFC')
 
