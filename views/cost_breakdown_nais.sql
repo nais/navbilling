@@ -35,7 +35,7 @@
                       , SUM(cost) AS sum_cost
                       , SUM(SUM(cost)) OVER (PARTITION BY sku_id, usage_start_time) AS sum_cost_per_sku
                       --,sum(cost_with_unallocated_untracked) as sum_cost_with_unallocated_untracked
-                 FROM `nais-labs-ebde.gke_usage.usage_metering_cost_breakdown`
+                 FROM `nais-io.legacy_gke_usage.nais-labs-ebde`
                  GROUP BY cluster, namespace, sku_id, usage_start_time, app
              ),
 
