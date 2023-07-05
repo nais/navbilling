@@ -1,6 +1,15 @@
 SELECT b.project_name 
         , b.project_id
-        , b.env
+        , case
+            when b.env is null then 
+                case
+                    when b.project_name like '%-dev' then 'dev'
+                    when b.project_name like '%-prod' then 'prod'
+                    when b.project_name like '%-ci' then 'ci'
+                    else null
+                end
+            else env
+        end as env
         , b.k8s_cluster as cluster
         , b.k8s_namespace as namespace
         , case --TODO: håndtere knada-teams
