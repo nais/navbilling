@@ -1,6 +1,7 @@
 SELECT 
   project.name project_name,
   project.id project_id,
+  (SELECT value from UNNEST(labels) WHERE key='team') as team_label,
   (SELECT value from UNNEST(project.labels) WHERE key='team') as team,
   (SELECT value from UNNEST(project.labels) WHERE key='environment') as env,
   (SELECT value from UNNEST(project.labels) WHERE key='tenant') as tenant,

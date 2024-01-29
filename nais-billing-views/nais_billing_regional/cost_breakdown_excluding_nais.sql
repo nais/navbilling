@@ -1,7 +1,7 @@
 SELECT b.project_name 
         , b.project_id
         , b.env
-        , b.team
+        , IFNULL(b.team_label, b.team) as team
         , COALESCE(b.tenant, 'nav') as tenant
         , (SELECT value from UNNEST(labels) WHERE key='app') as app
         -- TODO: cost_category er veldig ufullstendig
