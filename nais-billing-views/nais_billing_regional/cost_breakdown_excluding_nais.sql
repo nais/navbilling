@@ -7,7 +7,7 @@ SELECT b.project_name
         -- TODO: cost_category er veldig ufullstendig
         , CASE
             WHEN starts_with(b.team, 'nais') THEN 'Plattform'
-            WHEN b.team in ('nada', 'knada-gcp') THEN 'Dataplattform'
+            WHEN b.team in ('nada', 'knada-gcp', 'knada-dev') THEN 'Dataplattform'
             WHEN b.team = 'isoc' THEN 'ISOC/SecOps'
             WHEN (b.project_name LIKE '%-dev' OR b.project_name LIKE '%-prod') THEN 'Produktteam'
             ELSE 'Annet'
