@@ -18,7 +18,7 @@ SELECT b.project_name
             else b.team 
         end as team
         , COALESCE(b.tenant, 'nav') as tenant
-        , COALESCE(b.k8s_app, (SELECT value from UNNEST(labels) WHERE key='app')) as app
+        , COALESCE(b.k8s_app, app_label) as app
         -- cost_category vil ikke fordele GKE-kostnader hvis vi bare baserer på b.team
         , CASE
             WHEN b.k8s_namespace in (select team from `nais_billing_regional.nais_teams`) and not starts_with(b.k8s_namespace, 'nais') THEN 'Produktteam'

@@ -7,6 +7,7 @@ SELECT
   (SELECT value from UNNEST(project.labels) WHERE key='tenant') as tenant,
   (SELECT value from UNNEST(labels) WHERE key='k8s-namespace') as k8s_namespace,
   (SELECT value from UNNEST(labels) WHERE key='k8s-label/app') as k8s_app,
+  (SELECT value from UNNEST(labels) WHERE key='app') as app_label,
   (SELECT value from UNNEST(labels) WHERE key='goog-k8s-cluster-name') as k8s_cluster,
   service.description service_description,
   sku.id sku_id,
@@ -16,6 +17,5 @@ SELECT
   usage.amount usage_amount,
   usage.unit usage_unit,
   cost,
-  credits,
-  labels 
+  credits
 FROM `nais-io.nais_billing_regional.gcp_billing_export_resource_v1_014686_D32BB4_68DF8E`

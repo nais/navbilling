@@ -3,7 +3,7 @@ SELECT b.project_name
         , b.env
         , IFNULL(b.team_label, b.team) as team
         , COALESCE(b.tenant, 'nav') as tenant
-        , (SELECT value from UNNEST(labels) WHERE key='app') as app
+        , app_label as app
         -- TODO: cost_category er veldig ufullstendig
         , CASE
             WHEN starts_with(b.team, 'nais') THEN 'Plattform'
