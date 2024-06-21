@@ -1,1 +1,0 @@
-Viewene i denne mappen hører hjemme i `nais-io`-prosjektet. De inngår ikke i terraform-pipelinen ennå, men er opprettet i console.
