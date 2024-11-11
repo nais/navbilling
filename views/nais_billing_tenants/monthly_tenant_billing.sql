@@ -1,0 +1,1 @@
+select * from `nais-io.tenant_billing.monthly_tenant_billing`;
