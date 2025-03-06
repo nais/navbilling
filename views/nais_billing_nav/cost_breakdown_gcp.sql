@@ -1,0 +1,1 @@
+select * from nais-io.nais_billing_regional.tenant_nav

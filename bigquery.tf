@@ -12,6 +12,13 @@ resource "google_bigquery_dataset" "nais_billing_tenants" {
   location      = "europe-north1"
 }
 
+resource "google_bigquery_dataset" "nais_billing_nav" {
+  dataset_id    = "nais_billing_nav"
+  friendly_name = "nais_billing_nav"
+  description   = "Nav-specific views reading from nais/naibilling. Managed by terraform in nais/navbilling"
+  location      = "europe-north1"
+}
+
 resource "google_bigquery_table" "cost_breakdown_aiven" {
   dataset_id  = google_bigquery_dataset.navbilling.dataset_id
   table_id    = "cost_breakdown_aiven"
@@ -85,6 +92,61 @@ resource "google_bigquery_table" "monthly_tenant_billing" {
 
   view {
     query          = file("views/nais_billing_tenants/monthly_tenant_billing.sql")
+    use_legacy_sql = false
+  }
+}
+
+resource "google_bigquery_table" "aiven_cost_items" {
+  dataset_id  = google_bigquery_dataset.nais_billing_nav.dataset_id
+  table_id    = "aiven_cost_items"
+  description = "Part of aiven cost items which belongs to nav"
+
+  view {
+    query          = file("views/nais_billing_nav/aiven_cost_items.sql")
+    use_legacy_sql = false
+  }
+}
+
+resource "google_bigquery_table" "cost_breakdown_aiven_daily" {
+  dataset_id  = google_bigquery_dataset.nais_billing_nav.dataset_id
+  table_id    = "cost_breakdown_aiven_daily"
+  description = "Daily cost breakdown for aiven. Derived from monthly cost"
+
+  view {
+    query          = file("views/nais_billing_nav/cost_breakdown_aiven_daily.sql")
+    use_legacy_sql = false
+  }
+}
+
+resource "google_bigquery_table" "cost_breakdown_gcp" {
+  dataset_id  = google_bigquery_dataset.nais_billing_nav.dataset_id
+  table_id    = "cost_breakdown_gcp"
+  description = "Cost breakdown for gcp"
+
+  view {
+    query          = file("views/nais_billing_nav/cost_breakdown_gcp.sql")
+    use_legacy_sql = false
+  }
+}
+
+resource "google_bigquery_table" "cost_breakdown_gcp_extended" {
+  dataset_id  = google_bigquery_dataset.nais_billing_nav.dataset_id
+  table_id    = "cost_breakdown_gcp_extended"
+  description = "Extended cost breakdown for gcp. Includes numbers used to calculate cost"
+
+  view {
+    query          = file("views/nais_billing_nav/cost_breakdown_gcp_extended.sql")
+    use_legacy_sql = false
+  }
+}
+
+resource "google_bigquery_table" "focus_v1" {
+  dataset_id  = google_bigquery_dataset.nais_billing_nav.dataset_id
+  table_id    = "focus_v1"
+  description = "Detailed cost breakdown for gcp on FOCUS format"
+
+  view {
+    query          = file("views/nais_billing_nav/focus_v1.sql")
     use_legacy_sql = false
   }
 }
