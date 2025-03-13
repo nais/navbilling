@@ -116,7 +116,9 @@ WITH
                 )
             ) AS focus_tags,
         FROM
-            `nais-io.nais_billing_regional.source_nav`
+            `nais-io.nais_billing_regional.source_nav` source
+            -- Joining with gcp_focus_mapping to get one single service category
+            LEFT JOIN `nais-analyse-prod-2dcc.nais_billing_nav.gcp_focus_mapping` mapping ON source.service.description = mapping.ConsumedService
     ),
     prices AS (
         SELECT
@@ -254,7 +256,8 @@ SELECT
         ),
         NULL
     ) AS ResourceType,
-    prices.product_taxonomy AS ServiceCategory,
+    -- ServiceCategory is changed from the template to use the mapping from gcp_focus_mapping
+    COALESCE(usage_cost_data.ServiceCategory, "Other") as ServiceCategory,
     usage_cost_data.service.description AS ServiceName,
     IF(
         usage_cost_data.cost_type = "regular",
