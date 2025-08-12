@@ -150,3 +150,14 @@ resource "google_bigquery_table" "focus_v1" {
     use_legacy_sql = false
   }
 }
+
+resource "google_bigquery_table" "aiven_kafka_cost_monthly" {
+  dataset_id  = google_bigquery_dataset.nais_billing_nav.dataset_id
+  table_id    = "aiven_kafka_cost_monthly"
+  description = "Monthly cost breakdown for Aiven Kafka"
+
+  view {
+    query          = file("views/nais_billing_nav/aiven_kafka_cost_monthly.sql")
+    use_legacy_sql = false
+  }
+}
