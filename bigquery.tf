@@ -161,3 +161,84 @@ resource "google_bigquery_table" "aiven_kafka_cost_monthly" {
     use_legacy_sql = false
   }
 }
+
+resource "google_bigquery_table" "cost_anomalies" {
+  dataset_id  = google_bigquery_dataset.nais_billing_nav.dataset_id
+  table_id    = "cost_anomalies"
+  description = "Cost anomalies detected in billing data"
+  
+  schema = jsonencode([
+    {
+      name = "anomaly_id"
+      type = "STRING"
+      mode = "NULLABLE"
+      description = "Name or identifier of the detected anomaly"
+    },
+    {
+      name = "resource_name"
+      type = "STRING"
+      mode = "NULLABLE"
+      description = "Name of the resource associated with the anomaly"
+    },
+    {
+      name = "resource_display_name"
+      type = "STRING"
+      mode = "NULLABLE"
+      description = "Display name of the resource"
+    },
+    {
+      name = "detection_date"
+      type = "TIMESTAMP"
+      mode = "NULLABLE"
+      description = "Date and time when the anomaly was detected"
+    },
+    {
+      name = "scope"
+      type = "STRING"
+      mode = "NULLABLE"
+      description = "Scope of the anomaly detection"
+    },
+    {
+      name = "expected_spend"
+      type = "FLOAT64"
+      mode = "NULLABLE"
+      description = "Expected spending amount"
+    },
+    {
+      name = "actual_spend"
+      type = "FLOAT64"
+      mode = "NULLABLE"
+      description = "Actual spending amount"
+    },
+    {
+      name = "deviation_amount"
+      type = "FLOAT64"
+      mode = "NULLABLE"
+      description = "Absolute deviation amount from expected spend"
+    },
+    {
+      name = "deviation_percentage"
+      type = "FLOAT64"
+      mode = "NULLABLE"
+      description = "Percentage deviation from expected spend"
+    },
+    {
+      name = "currency_code"
+      type = "STRING"
+      mode = "NULLABLE"
+      description = "Currency code for the spending amounts"
+    },
+    {
+      name = "root_causes_json"
+      type = "STRING"
+      mode = "NULLABLE"
+      description = "JSON string containing root cause analysis"
+    },
+    {
+      name = "processed_at"
+      type = "TIMESTAMP"
+      mode = "NULLABLE"
+      description = "Timestamp when the record was processed"
+    }
+  ])
+  }
