@@ -1,0 +1,1 @@
+select * from `nais-io.focus_billing.focus_v1_nav`;

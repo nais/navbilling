@@ -15,8 +15,15 @@ resource "google_bigquery_dataset" "nais_billing_tenants" {
 resource "google_bigquery_dataset" "nais_billing_nav" {
   dataset_id    = "nais_billing_nav"
   friendly_name = "nais_billing_nav"
-  description   = "Nav-specific views reading from nais/naibilling. Managed by terraform in nais/navbilling"
+  description   = "Nav-specific views reading from nais/nais_billing. Managed by terraform in nais/navbilling"
   location      = "europe-north1"
+}
+
+resource "google_bigquery_dataset" "focus_billing" {
+  dataset_id    = "focus_billing"
+  friendly_name = "focus_billing"
+  description   = "Billing data on FOCUS format. Managed by terraform in nais/navbilling"
+  location      = "EU"
 }
 
 resource "google_bigquery_table" "cost_breakdown_aiven" {
@@ -158,6 +165,17 @@ resource "google_bigquery_table" "aiven_kafka_cost_monthly" {
 
   view {
     query          = file("views/nais_billing_nav/aiven_kafka_cost_monthly.sql")
+    use_legacy_sql = false
+  }
+}
+
+resource "google_bigquery_table" "focus_billing" {
+  dataset_id  = google_bigquery_dataset.focus_billing.dataset_id
+  table_id    = "focus_v1"
+  description = "Billing data on FOCUS format"
+
+  view {
+    query          = file("views/focus_billing/focus_v1.sql")
     use_legacy_sql = false
   }
 }
