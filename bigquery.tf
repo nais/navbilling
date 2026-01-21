@@ -136,17 +136,6 @@ resource "google_bigquery_table" "cost_breakdown_gcp" {
   }
 }
 
-resource "google_bigquery_table" "cost_breakdown_gcp_extended" {
-  dataset_id  = google_bigquery_dataset.nais_billing_nav.dataset_id
-  table_id    = "cost_breakdown_gcp_extended"
-  description = "Extended cost breakdown for gcp. Includes numbers used to calculate cost"
-
-  view {
-    query          = file("views/nais_billing_nav/cost_breakdown_gcp_extended.sql")
-    use_legacy_sql = false
-  }
-}
-
 resource "google_bigquery_table" "focus_v1" {
   dataset_id  = google_bigquery_dataset.nais_billing_nav.dataset_id
   table_id    = "focus_v1"
