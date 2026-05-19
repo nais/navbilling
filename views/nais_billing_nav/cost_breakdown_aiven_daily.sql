@@ -1,1 +1,2 @@
-select * from `nais-io.nais_billing_regional.cost_breakdown_aiven_nav`
+select * from `nais-io.aiven_cost_regional.cost_breakdown_aiven_daily`
+where tenant in ('nav', 'dev-nais', 'ci-nais', 'test-nais')
